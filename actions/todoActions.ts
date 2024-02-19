@@ -13,14 +13,18 @@ export const getTodoListAction = async ({
 }: {
   userId: string | null;
 }) => {
-  return await prisma.todo.findMany({
-    where: {
-      user_id: userId as string,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  try {
+    return await prisma.todo.findMany({
+      where: {
+        user_id: userId as string,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
 };
 //create
 export const createTodoAction = async ({
@@ -34,15 +38,19 @@ export const createTodoAction = async ({
   completed: boolean;
   userId: string | null;
 }) => {
-  await prisma.todo.create({
-    data: {
-      title,
-      body,
-      completed,
-      user_id: userId as string,
-    },
-  });
-  revalidatePath("/");
+  try {
+    await prisma.todo.create({
+      data: {
+        title,
+        body,
+        completed,
+        user_id: userId as string,
+      },
+    });
+    revalidatePath("/");
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
 };
 //delete
 export const deleteTodoAction = async ({ id }: { id: string }) => {
@@ -56,15 +64,19 @@ export const UpdateTodoAction = async ({
   body,
   completed,
 }: ITodo) => {
-  await prisma.todo.update({
-    where: {
-      id,
-    },
-    data: {
-      title,
-      body,
-      completed,
-    },
-  });
-  revalidatePath("/");
+  try {
+    await prisma.todo.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        body,
+        completed,
+      },
+    });
+    revalidatePath("/");
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
 };

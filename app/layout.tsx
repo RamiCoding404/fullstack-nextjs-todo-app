@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, RedirectToSignIn, SignedOut } from "@clerk/nextjs";
 import Nav from "@/components/Nav";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,6 +31,9 @@ export default function RootLayout({
           >
             <Nav />
             {children}
+            <SignedOut>
+              <RedirectToSignIn redirectUrl="/sign-in" />
+            </SignedOut>
           </ThemeProvider>
         </body>
       </html>
